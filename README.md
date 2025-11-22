@@ -1,6 +1,4 @@
-# 🌐 Mxlw Browser
-
-![Mxlw Browser](https://github.com/user-attachments/assets/4d18fbf9-e091-4de0-a0cd-cc2a3f9f7105)
+<img width="1280" height="720" alt="Mxlw Browser" src="https://github.com/user-attachments/assets/69d2fc54-0ff5-4da5-8fe6-b2cc259a5e43" />
 
 **Mxlw Browser** est un navigateur web **minimaliste**, **rapide** et **extensible**, construit avec **Electron** et **Node.js**.  
 Son interface s’inspire des designs **minimaliste** et **intuitive**, offrant une expérience claire et moderne.
