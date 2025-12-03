@@ -1,72 +1,138 @@
+/* ===== Global ===== */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #080808;
+  background: #070707;
+  color: #fff;
   -webkit-user-select: none;
 }
 
 .titlebar {
-  height: 30px;
-  background: #000000cc;
-  backdrop-filter: blur(8px);
+  height: 32px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px) saturate(160%);
   -webkit-app-region: drag;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .window-buttons button {
-  margin-left: 5px;
+  margin-left: 6px;
   background: transparent;
   border: none;
   font-size: 14px;
   cursor: pointer;
   -webkit-app-region: no-drag;
-  color: #ffffff;
+  color: #ffffffcc;
+  transition: color 0.15s ease, transform 0.1s ease;
+}
+.window-buttons button:hover {
+  color: #fff;
+  transform: scale(1.1);
 }
 
 .toolbar {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background: #1a1a1a;
-  box-shadow: 0 1px 4px rgba(255,255,255,0.1);
   gap: 10px;
+  padding: 10px 14px;
+  background: rgba(20,20,20,0.75);
+  backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 input {
   flex: 1;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #333333;
-  background: #2a2a2a;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(40,40,40,0.65);
+  backdrop-filter: blur(6px);
   color: #ffffff;
+  transition: border 0.15s ease, background 0.15s ease;
+}
+input:focus {
+  outline: none;
+  border-color: #4caf50;
+  background: rgba(50,50,50,0.8);
 }
 
 button {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #222222;
-  background: #2a2a2a;
-  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(35,35,35,0.7);
+  backdrop-filter: blur(6px);
   color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+button:hover {
+  background: rgba(60,60,60,0.8);
+  transform: translateY(-1px);
+}
+button:active {
+  transform: translateY(0);
 }
 
 .tabs {
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  background: transparent;
 }
 
 .tab {
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: #333333;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #ffffffcc;
   cursor: pointer;
-  color: #ffffff;
+  font-size: 14px;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+  position: relative;
+  font-family: inherit;
 }
+
 .tab:hover {
-  background: #444444;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.tab.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-radius: 8px;
+  transform: translateY(0);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 2px 6px rgba(0,0,0,0.35);
+}
+
+.tab.active::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 12%;
+  width: 76%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.45),
+    transparent
+  );
+  border-radius: 2px;
 }
 
 .url-container {
@@ -78,29 +144,36 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #1a2a1a;
+  background: rgba(26,40,26,0.65);
   border: 1px solid #4caf50;
   color: #4caf50;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  backdrop-filter: blur(6px);
   position: relative;
   z-index: 9999;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+#verified-badge:hover {
+  background: rgba(36,56,36,0.75);
+  transform: translateY(-1px);
 }
 
 #verified-badge .verified-info {
   position: absolute;
-  bottom: -80px;
+  bottom: -85px;
   left: 0;
-  background: #1a1a1a;
+  background: rgba(20,20,20,0.85);
   color: #ffffff;
-  border: 1px solid #333333;
-  padding: 8px 12px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(255,255,255,0.1);
-  width: 240px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 10px 14px;
+  border-radius: 12px;
+  width: 250px;
   display: none;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.45);
+  backdrop-filter: blur(12px);
   animation: fadeIn 0.2s ease;
   z-index: 9999;
 }
@@ -114,6 +187,6 @@ button {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
