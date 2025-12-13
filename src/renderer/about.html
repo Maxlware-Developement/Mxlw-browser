@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos - Mxlw Browser</title>
+  <style>
+    :root {
+      --bg-primary: #121212;
+      --bg-secondary: #1e1e1e;
+      --bg-tertiary: #2d2d2d;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --accent: #8b8b8b;
+      --accent-hover: #999999;
+      --border: #404040;
+      --success: #4ade80;
+      --warning: #fbbf24;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: var(--bg-secondary);
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      -webkit-app-region: drag;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-btn {
+      -webkit-app-region: no-drag;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 22px;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .close-btn:hover {
+      background: #ff4757;
+      color: white;
+    }
+
+    .container {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .app-header {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .app-version {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .info-value {
+      font-family: 'Consolas', monospace;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .version-value {
+      color: var(--success);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .update-status {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 13px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .update-available {
+      border-color: var(--warning);
+      background: rgba(251, 191, 36, 0.1);
+      color: var(--warning);
+    }
+
+    .text-content {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      max-height: 120px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .text-content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .text-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .text-content::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .footer {
+      padding: 16px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border);
+      background: var(--bg-secondary);
+    }
+
+    .badge {
+      background: var(--accent);
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-title">
+      À propos de Mxlw Browser
+    </div>
+    <button class="close-btn" id="closeBtn">×</button>
+  </div>
+
+  <div class="container">
+    <div class="app-header">
+      <h1>Mxlw Browser</h1>
+      <p class="app-version">Version <span id="currentVersion">1.0.9</span></p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Vérification de version</div>
+      
+      <div class="info-row">
+        <div class="info-label">Version actuelle</div>
+        <div class="info-value version-value" id="currentVersionText">1.0.9</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Dernière version</div>
+        <div class="info-value" id="latestVersionText">Vérification...</div>
+      </div>
+
+      <div id="updateStatus" class="update-status"></div>
+
+      <button class="btn" id="checkUpdateBtn">
+        Vérifier les mises à jour
+      </button>
+
+      <button class="btn btn-secondary" id="manualUpdateBtn" style="display: none;">
+        Télécharger la mise à jour
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Crédits</div>
+      <div class="text-content" id="creditsText">
+        Chargement des crédits...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Licence</div>
+      <div class="text-content" id="licenseText">
+        Chargement de la licence...
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2025 Maxlware Developement • Ctrl+Alt+C pour ouvrir/fermer
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const closeBtn = document.getElementById('closeBtn');
+    const checkUpdateBtn = document.getElementById('checkUpdateBtn');
+    const manualUpdateBtn = document.getElementById('manualUpdateBtn');
+    const updateStatus = document.getElementById('updateStatus');
+    const currentVersionText = document.getElementById('currentVersionText');
+    const latestVersionText = document.getElementById('latestVersionText');
+    const creditsText = document.getElementById('creditsText');
+    const licenseText = document.getElementById('licenseText');
+
+    let latestVersionAvailable = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkForUpdates();
+    });
+
+    closeBtn.addEventListener('click', () => {
+      ipcRenderer.send('close-about');
+    });
+
+    checkUpdateBtn.addEventListener('click', () => {
+      checkForUpdates();
+    });
+
+    manualUpdateBtn.addEventListener('click', () => {
+      if (latestVersionAvailable) {
+        ipcRenderer.send('open-external-link', 
+          'https://api.maxlware.fr/v1/mxlw-browser/download');
+      }
+    });
+
+    function checkForUpdates() {
+      updateStatus.textContent = "Vérification en cours...";
+      updateStatus.style.display = "block";
+      
+      checkUpdateBtn.disabled = true;
+      checkUpdateBtn.textContent = "Vérification...";
+      
+      ipcRenderer.send('check-update-now');
+    }
+
+    ipcRenderer.on('update-available', (event, version) => {
+      latestVersionAvailable = version;
+      latestVersionText.textContent = version;
+      latestVersionText.style.color = "var(--warning)";
+      
+      updateStatus.textContent = `🎉 Mise à jour disponible : v${version}`;
+      updateStatus.className = "update-status update-available";
+      updateStatus.style.display = "block";
+      
+      manualUpdateBtn.style.display = "block";
+      checkUpdateBtn.disabled = false;
+      checkUpdateBtn.textContent = "Vérifier à nouveau";
+    });
+
+    ipcRenderer.on('update-status', (event, message) => {
+      latestVersionText.textContent = message.includes("à jour") 
+        ? currentVersionText.textContent 
+        : "Inconnue";
+      latestVersionText.style.color = message.includes("à jour") ? "var(--success)" : "var(--text-secondary)";
+      
+      updateStatus.textContent = message;
+      updateStatus.className = "update-status";
+      updateStatus.style.display = "block";
+      
+      manualUpdateBtn.style.display = "none";
+      checkUpdateBtn.disabled = false;
+      checkUpdateBtn.textContent = "Vérifier à nouveau";
+      
+      setTimeout(() => {
+        updateStatus.style.display = "none";
+      }, 3000);
+    });
+
+    ipcRenderer.on('about-data', (event, data) => {
+      currentVersionText.textContent = data.currentVersion;
+      creditsText.textContent = data.creditsText;
+      licenseText.textContent = data.licenseText;
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.altKey && e.code === 'KeyC') {
+        ipcRenderer.send('close-about');
+      }
+    });
+  </script>
+</body>
+</html>
