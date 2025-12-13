@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mise à jour</title>
+<style>
+    body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: #1e1e1e;
+        color: white;
+        text-align: center;
+    }
+    .version { margin: 10px 0; }
+    .buttons { margin-top: 20px; display: flex; gap: 10px; }
+    button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    #installBtn { background: #2ecc71; color: white; }
+    #laterBtn { background: #7f8c8d; color: white; }
+    #progressContainer { display: none; margin-top: 15px; }
+    #progressFill { height: 20px; background: #3498db; width: 0%; transition: width 0.3s; }
+    .error { color: #e74c3c; display: none; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h2>Mise à jour disponible</h2>
+
+<div class="version">
+    <div>Version actuelle : <span id="currentVersion">1.0.7</span></div>
+    <div>Nouvelle version : <span id="newVersion">1.0.8</span></div>
+</div>
+
+<div id="progressContainer">
+    <div id="progressFill"></div>
+    <div id="progressText">Téléchargement : 0%</div>
+</div>
+
+<div class="error" id="errorMessage"></div>
+
+<div class="buttons">
+    <button id="laterBtn">Plus tard</button>
+    <button id="installBtn">Installer</button>
+</div>
+
+<script>
+    const { ipcRenderer } = require('electron');
+    let newVersion = '';
+
+    ipcRenderer.on('set-versions', (event, data) => {
+        document.getElementById('currentVersion').textContent = data.current;
+        document.getElementById('newVersion').textContent = data.new;
+        newVersion = data.new;
+    });
+
+    ipcRenderer.on('download-progress', (event, progress) => {
+        document.getElementById('progressFill').style.width = progress + '%';
+        document.getElementById('progressText').textContent = `Téléchargement : ${progress}%`;
+    });
+
+    ipcRenderer.on('download-started', () => {
+        document.getElementById('progressContainer').style.display = 'block';
+        document.getElementById('installBtn').disabled = true;
+        document.getElementById('installBtn').textContent = 'Téléchargement...';
+        document.getElementById('laterBtn').disabled = true;
+    });
+
+    ipcRenderer.on('download-finished', () => {
+        document.getElementById('progressText').textContent = 'Téléchargement terminé !';
+    });
+
+    ipcRenderer.on('download-error', (event, error) => {
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = 'Erreur : ' + error;
+        errorMessage.style.display = 'block';
+        document.getElementById('installBtn').disabled = false;
+        document.getElementById('installBtn').textContent = 'Réessayer';
+        document.getElementById('laterBtn').disabled = false;
+    });
+
+    document.getElementById('installBtn').addEventListener('click', () => {
+        if (newVersion) ipcRenderer.send('install-update', newVersion);
+    });
+
+    document.getElementById('laterBtn').addEventListener('click', () => {
+        ipcRenderer.send('postpone-update');
+    });
+</script>
+
+</body>
+</html>
