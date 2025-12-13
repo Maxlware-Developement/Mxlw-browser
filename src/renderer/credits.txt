@@ -1,0 +1,33 @@
+Mxlw Browser - Crédits
+
+Développement Principal:
+• Maxlware (Fondateur & Lead Developer)
+• Équipe Maxlware Developement
+
+Contributeurs:
+• EletrixTime
+• mydkong
+
+Technologies utilisées:
+• Electron - Framework d'application desktop
+• Node.js - Environnement d'exécution
+• HTML5/CSS3/JavaScript - Interface utilisateur
+• Chromium - Moteur de rendu
+
+Bibliothèques tierces:
+• sudo-prompt - Élévation de privilèges
+• discord-rpc - Discord Rich Presence
+• Divers modules npm
+
+Icônes & Design:
+• Icônes custom par Maxlware
+• Thème sombre personnalisé
+• Interface matérielle moderne
+
+Remerciements spéciaux:
+• Tous nos testeurs bêta
+• La communauté Electron
+• Nos utilisateurs fidèles
+
+Version: 1.0.9
+Dernière mise à jour: Décembre 2025
