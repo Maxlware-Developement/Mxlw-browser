@@ -4,8 +4,8 @@
 
 | Version        | Statut         |
 |----------------|----------------|
-| 1.0.5          |    Maintenue   |
-| < 1.0.4        |  Non maintenue |
+| 1.0.8          |    Maintenue   |
+| < 1.0.7        |  Non maintenue |
 
 Seules les versions officielles à partir dee **1.0.5** sont activement maintenues.  
 Les anciennes versions peuvent contenir des vulnérabilités non corrigées.
