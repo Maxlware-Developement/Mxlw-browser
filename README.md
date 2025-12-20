@@ -5,7 +5,7 @@ Son interface s’inspire des designs **minimaliste** et **intuitive**, offrant 
 
 ---
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 - **Onglets personnalisés** avec titre et favicon  
 - **Barre de recherche intelligente** redirigeant vers Google  
@@ -17,28 +17,67 @@ Son interface s’inspire des designs **minimaliste** et **intuitive**, offrant 
 
 ---
 
-## ⚙️ Prérequis
+## Lancer en mode dev.
+1. Installer le git
+```
+git clone https://github.com/Maxlware-Developement/Mxlw-browser.git
+```
+Et aller dans le dossier avec le code
+```
+cd Mxlw-browser/src
+```
+2. Installer les dépendances (avec node.js)
+```
+npm install
+```
+3. Lancer en mode dev.
+```
+npm start
+```
 
-### Minimum
+## Prérequis
+
+### Windows
+**Minimum :**
 - Processeur : Intel Core i5 1.6 GHz  
 - Mémoire : 4 Go RAM  
 - Stockage : 250 Mo (installation) / 500 Mo conseillé  
 
-### Recommandé
+**Recommandé :**
 - Processeur : Intel Core i5 1.6 GHz ou supérieur  
 - Mémoire : 8 Go RAM  
+- Stockage : 250 Mo (installation) / 500 Mo conseillé
+
+### MacOS (Intel) 
+- Processeur : Intel Core i5 1.6 GHz  
+- Mémoire : 8 Go RAM  
+- Stockage : 150 Mo (installation) / 500 Mo conseillé  
+
+**Recommandé :**
+- Processeur : Intel Core i5 1.6 GHz ou supérieur  
+- Mémoire : 8 ou plus Go RAM  
+- Stockage : 150 Mo (installation) / 500 Mo conseillé
+
+### Linux
+- Processeur : Intel Core i5 1.6 GHz  
+- Mémoire : 4 Go RAM  
 - Stockage : 250 Mo (installation) / 500 Mo conseillé  
+
+**Recommandé :**
+- Processeur : Intel Core i5 1.6 GHz ou supérieur  
+- Mémoire : 8 Go RAM  
+- Stockage : 250 Mo (installation) / 500 Mo conseillé
 
 ---
 
-## 📄 Licence
+## Licence
 
 Ce projet est sous **Mozilla Public License 2.0 (MPL-2.0)**.  
 Inspiré par la philosophie **open-source** de Mozilla Firefox.
 
 ---
 
-## 👤 Auteurs
+## Auteurs
 
-Développé par **Maxlware**  
-📧 Contact : [contact@maxlware.fr](mailto:contact@maxlware.fr)
+Développé par **Maxlware** et **EletrixTime**.
+Contact : [contact@maxlware.fr](mailto:contact@maxlware.fr)
