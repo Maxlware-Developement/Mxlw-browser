@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
+chalk.level = 3;
 
 
 let settings = {
@@ -28,7 +30,7 @@ if (fs.existsSync(settingsPath)) {
     const userSettings = JSON.parse(file);
     settings = { ...settings, ...userSettings };
   } catch (e) {
-    console.error('[JSON] Json error :', e);
+    console.error(chalk.yellow('[JSON] Json error :', e));
   }
 }else {
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
