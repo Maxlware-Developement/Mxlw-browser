@@ -1,11 +1,11 @@
 {
   "name": "mxlw-browser",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Navigateur web minimaliste et extensible développé avec Electron et Node.js",
   "author": {
     "name": "Maxlware",
-    "email": "contact@maxlware.fr",
-    "url": "https://maxlware.fr"
+    "email": "contact@maxlware.com",
+    "url": "https://maxlware.com"
   },
   "license": "MPL-2.0",
   "main": "main.js",
@@ -13,6 +13,9 @@
     "start": "electron .",
     "build": "electron-builder",
     "dist:win": "electron-builder --win",
+    "dist:win:x64": "electron-builder --win --x64",
+    "dist:win:arm64": "electron-builder --win --arm64",
+    "dist:win:all": "electron-builder --win --x64 --arm64",
     "dist:linux": "electron-builder --linux",
     "dist:mac": "electron-builder --mac"
   },
@@ -44,7 +47,9 @@
     "electron-builder": "^24.13.3"
   },
   "dependencies": {
+    "chalk": "^4.1.2",
     "discord-rpc": "^4.0.1",
+    "electron-progressbar": "^2.2.1",
     "sudo-prompt": "^9.2.1"
   },
   "build": {
@@ -59,6 +64,7 @@
       "context-menu.js",
       "adblocker.js",
       "settings.json",
+      "utils/**/*",
       "renderer/**/*",
       "assets/**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,test,__tests__,tests}",
