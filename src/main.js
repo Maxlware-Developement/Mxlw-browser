@@ -8,6 +8,8 @@ const { setupAdblock } = require('./utils/adblocker');
 const { loadConfig } = require('./utils/config_loader');
 const { exec } = require('child_process');
 const { shell } = require('electron');
+const chalk = require('chalk');
+chalk.level = 3;
 
 const APP_VERSION = "1.0.9";
 
@@ -482,16 +484,16 @@ function createAboutWindow() {
 
 async function checkVersion() {
   return new Promise((resolve, reject) => {
-    const req = https.get('https://api.maxlware.fr/v1/mxlw-browser/version', (res) => {
+    const req = https.get('https://api.maxlware.com/v1/mxlw-browser/version', (res) => {
       if (res.statusCode !== 200) {
-        console.log(`[VERSION] API returned status ${res.statusCode}`);
+        console.log(chalk.yellow(`[VERSION] API returned status ${res.statusCode}`));
         resolve(null);
         return;
       }
       
       const contentType = res.headers['content-type'];
       if (!contentType || !contentType.includes('application/json')) {
-        console.log(`[VERSION] Invalid content-type: ${contentType}`);
+        console.log(chalk.red(`[VERSION] Invalid content-type: ${contentType}`));
         resolve(null);
         return;
       }
@@ -504,7 +506,7 @@ async function checkVersion() {
       
       res.on('end', () => {
         try {
-          console.log(`[VERSION] API response: ${data}`);
+          console.log(chalk.green(`[VERSION] API response: ${data}`));
           const result = JSON.parse(data);
           
           let version = null;
@@ -517,24 +519,24 @@ async function checkVersion() {
           if (version && typeof version === 'string') {
             resolve(version);
           } else {
-            console.log('[VERSION] No version found in response');
+            console.log(chalk.yellow('[VERSION] No version found in response'));
             resolve(null);
           }
         } catch (error) {
-          console.error('[VERSION] JSON parse error:', error);
+          console.error(chalk.red('[VERSION] JSON parse error:', error));
           resolve(null);
         }
       });
     });
     
     req.on('error', (err) => {
-      console.error('[VERSION] Request error:', err.message);
+      console.error(chalk.red('[VERSION] Request error:', err.message));
       resolve(null);
     });
     
     req.setTimeout(5000, () => {
       req.destroy();
-      console.log('[VERSION] Request timeout');
+      console.log(chalk.yellow('[VERSION] Request timeout'));
       resolve(null);
     });
   });
@@ -568,11 +570,11 @@ function createUpdateWindow(apiVersion) {
 }
 
 function downloadUpdate(version) {
-  const downloadUrl = `https://api.maxlware.fr/v1/mxlw-browser/download`;
+  const downloadUrl = `https://api.maxlware.com/v1/mxlw-browser/download`;
   const fileName = `mxlw-browser-${version}-setup.exe`;
   const filePath = path.join(app.getPath('temp'), fileName);
 
-  console.log(`[UPDATE] Downloading from: ${downloadUrl}`);
+  console.log(chalk.cyan(`[UPDATE] Downloading from: ${downloadUrl}`));
   
   if (updateWindow) {
     updateWindow.webContents.send('download-started');
@@ -582,7 +584,7 @@ function downloadUpdate(version) {
   
   https.get(downloadUrl, (response) => {
     if (response.statusCode !== 200) {
-      console.error(`[UPDATE] Download failed with status: ${response.statusCode}`);
+      console.error(chalk.red(`[UPDATE] Download failed with status: ${response.statusCode}`));
       if (updateWindow) {
         updateWindow.webContents.send('download-error', `HTTP ${response.statusCode}`);
       }
@@ -618,7 +620,7 @@ function downloadUpdate(version) {
         
         exec(`"${filePath}"`, (error) => {
           if (error) {
-            console.error('[UPDATE] Error launching installer:', error);
+            console.error(chalk.red('[UPDATE] Error launching installer:', error));
           }
           app.quit();
         });
@@ -626,7 +628,7 @@ function downloadUpdate(version) {
     });
     
   }).on('error', (err) => {
-    console.error('[UPDATE] Download error:', err);
+    console.error(chalk.red('[UPDATE] Download error:', err));
     if (updateWindow) {
       updateWindow.webContents.send('download-error', err.message);
     }
@@ -651,7 +653,7 @@ ipcMain.on('check-update-now', async (event) => {
       event.sender.send('update-status', 'Impossible de vérifier les mises à jour.');
     }
   } catch (error) {
-    console.error('[ABOUT] Update check error:', error);
+    console.error(chalk.yellow('[ABOUT] Update check error:', error));
     event.sender.send('update-status', 'Erreur lors de la vérification.');
   }
 });
@@ -672,11 +674,11 @@ ipcMain.on('postpone-update', () => {
 });
 
 function startApp() {
-  console.log("[START] Loading configurations...");
+  console.log(chalk.cyan("[START] Loading configurations..."));
   settings = loadConfig();
-  console.log("[START] Configuration loaded!");
+  console.log(chalk.cyan("[START] Configuration loaded!"));
 
-  console.log("[RPC] Loading...");
+  console.log(chalk.cyan("[RPC] Loading..."));
   if (settings.RpcEnabled) {
     require('./rpc');
   }
@@ -687,7 +689,7 @@ function startApp() {
       const data = await response.json();
       verifiedSites = data;
     } catch (error) {
-      console.error('[Config/Net/VerifiedSites]: ', error);
+      console.error(chalk.yellow('[Config/Net/VerifiedSites]: ', error));
     }
   });
 
@@ -695,32 +697,32 @@ function startApp() {
 }
 
 app.whenReady().then(async () => {
-  console.log("[VERSION] Checking version...");
+  console.log(chalk.cyan("[VERSION] Checking version..."));
   
   const ret = globalShortcut.register('Control+Alt+C', () => {
-    console.log('[SHORTCUT] Ctrl+Alt+C pressed - Opening About window');
+    console.log(chalk.white('[SHORTCUT] Ctrl+Alt+C pressed - Opening About window'));
     createAboutWindow();
   });
   
   if (!ret) {
-    console.log('[SHORTCUT] Registration failed for Ctrl+Alt+C');
+    console.log(chalk.yellow('[SHORTCUT] Registration failed for Ctrl+Alt+C'));
   }
   
   try {
     const apiVersion = await checkVersion();
     
     if (apiVersion && apiVersion !== APP_VERSION) {
-      console.log(`[VERSION] Update available: ${APP_VERSION} -> ${apiVersion}`);
+      console.log(chalk.cyan(`[VERSION] Update available: ${APP_VERSION} -> ${apiVersion}`));
       createUpdateWindow(apiVersion);
     } else if (apiVersion) {
-      console.log(`[VERSION] App is up to date (${APP_VERSION})`);
+      console.log(chalk.cyan(`[VERSION] App is up to date (${APP_VERSION})`));
       checkAdminRights();
     } else {
-      console.log('[VERSION] Could not check version, starting app normally');
+      console.log(chalk.yellow('[VERSION] Could not check version, starting app normally'));
       checkAdminRights();
     }
   } catch (error) {
-    console.error('[VERSION] Version check failed:', error);
+    console.error(chalk.red('[VERSION] Version check failed:', error));
     checkAdminRights();
   }
 });
@@ -732,12 +734,12 @@ function checkAdminRights() {
     if (process.platform === 'win32' && !process.argv.includes('--elevated')) {
       const execPath = process.execPath;
       const options = { name: 'Mxlw Browser' };
-      console.log("[START] Requesting admin permissions...");
+      console.log(chalk.cyan("[START] Requesting admin permissions..."));
       const command = `"${execPath}" ${process.argv.slice(1).join(' ')} --elevated`;
 
       sudo.exec(command, options, (error) => {
         if (error) {
-          console.error('[START] Error requesting perms:', error);
+          console.error(chalk.red('[START] Error requesting perms:', error));
           startApp();
         }
       });
@@ -750,7 +752,7 @@ function checkAdminRights() {
 var IDONTCAREABOUTTHEFOLLOWINGCODE = true;
 
 function createWindow() {
-  console.log("[START] Starting application...");
+  console.log(chalk.cyan("[START] Starting application..."));
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
@@ -761,19 +763,19 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-  console.log("[START] Application loaded.");
+  console.log(chalk.cyan("[START] Application loaded."));
 
-  console.log("[START] Loading menu...");
+  console.log(chalk.cyan("[START] Loading menu..."));
   mainWindow.loadFile('renderer/index.html');
-  console.log("[START] Menu loaded!");
+  console.log(chalk.cyan("[START] Menu loaded!"));
   setupCreditsShortcut(mainWindow);
   
   createTab(`file://${__dirname}/${settings.homePage}`);
 
-  console.log("--------------------");
-  console.log("  [START] Loaded!");
-  console.log(`  Version ${APP_VERSION}`);
-  console.log("---------------------");
+  console.log(chalk.white("--------------------"));
+  console.log(chalk.cyan("  [START] Loaded!"));
+  console.log(chalk.cyan(`  Version ${APP_VERSION}`));
+  console.log(chalk.white("---------------------"));
 
   mainWindow.on('resize', () => resizeActiveTab());
   mainWindow.on('closed', () => {
@@ -807,10 +809,10 @@ function createTab(url) {
       const hostname = new URL(currentURL).hostname;
 
       if (verifiedSites.includes(hostname)) {
-        console.log(`[VERIFIED] ${hostname}`);
+        console.log(chalk.black(`[VERIFIED] ${hostname}`));
         mainWindow.webContents.send('site-verified', hostname);
       } else {
-        console.log(`[NOT VERIFIED] ${hostname}`);
+        console.log(chalk.black(`[NOT VERIFIED] ${hostname}`));
         mainWindow.webContents.send('site-unverified');
       }
     } catch (err) {
