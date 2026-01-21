@@ -1,6 +1,8 @@
 const { session } = require('electron');
 const fetch = require('node-fetch');
 const { loadConfig } = require('./config_loader');
+const chalk = require('chalk');
+chalk.level = 3;
 
 let blockedHosts = [];
 
@@ -16,14 +18,14 @@ async function loadBlockedHosts() {
         const lines = text.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));
         hosts.push(...lines);
       } catch (err) {
-        console.error('[Config/Net/Adblock] :', url, err);
+        console.error(chalk.yellow('[Config/Net/Adblock] :', url, err));
       }
     }
   }
 
   blockedHosts = hosts;
   console.log(blockedHosts)
-  console.log('[ADBLOCK] Adblock hosts loaded:', blockedHosts.length);
+  console.log(chalk.cyan('[ADBLOCK] Adblock hosts loaded:', blockedHosts.length));
 }
 
 function setupAdblock(view) {
@@ -34,7 +36,7 @@ function setupAdblock(view) {
     const blocked = blockedHosts.some(domain => url.includes(domain));
 
     if (blocked) {
-      console.log('[ADBLOCK] Ad blocked :', url);
+      console.log(chalk.black('[ADBLOCK] Ad blocked :', url));
       return callback({ cancel: true });
     }
 
