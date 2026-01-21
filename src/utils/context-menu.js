@@ -1,6 +1,8 @@
 const { Menu, clipboard, shell, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
+chalk.level = 3;
 
 function setupContextMenu(mainWindow, view) {
   view.webContents.on('context-menu', async (_, params) => {
