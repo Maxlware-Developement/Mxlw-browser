@@ -1,5 +1,7 @@
 // rpc.js
 const RPC = require('discord-rpc');
+const chalk = require('chalk');
+chalk.level = 3;
 
 const clientId = '1359597402096537620';
 const startTimestamp = new Date();
@@ -13,8 +15,7 @@ rpc.on('ready', () => {
     startTimestamp,
     instance: false
   });
-  console.log('[RPC] Online...');
+  console.log(chalk.green('[RPC] Online...'));
 });
 
 rpc.login({ clientId }).catch(console.error);
-
