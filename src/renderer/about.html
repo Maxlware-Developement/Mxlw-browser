@@ -261,7 +261,7 @@
   <div class="container">
     <div class="app-header">
       <h1>Mxlw Browser</h1>
-      <p class="app-version">Version <span id="currentVersion">1.0.9</span></p>
+      <p class="app-version">Version <span id="currentVersion">1.0.10</span></p>
     </div>
 
     <div class="card">
@@ -269,7 +269,7 @@
       
       <div class="info-row">
         <div class="info-label">Version actuelle</div>
-        <div class="info-value version-value" id="currentVersionText">1.0.9</div>
+        <div class="info-value version-value" id="currentVersionText">1.0.10</div>
       </div>
 
       <div class="info-row">
@@ -336,7 +336,7 @@
     manualUpdateBtn.addEventListener('click', () => {
       if (latestVersionAvailable) {
         ipcRenderer.send('open-external-link', 
-          'https://api.maxlware.fr/v1/mxlw-browser/download');
+          'https://api.maxlware.com/v1/mxlw-browser/download');
       }
     });
 
