@@ -14,6 +14,9 @@
       --accent: #3a86ff;
       --accent-hover: #2a76ef;
       --border: #404040;
+      --success: #4CAF50;
+      --warning: #FF9800;
+      --danger: #f44336;
     }
 
     * {
@@ -161,14 +164,14 @@
   </div>
 
   <div class="update-panel">
-    Version 1.0.10
+    Version 1.1.0 Beta
 
     <div class="update-dropdown">
-      <div class="update-title">Mise à jour 1.0.10</div>
-      <div class="update-subtitle">Sortie le 21 Janvier 2026</div>
+      <div class="update-title">Mise à jour 1.1.0 Beta</div>
+      <div class="update-subtitle">Sortie le 25 Janvier 2026</div>
 
       <div class="update-text">
-        Cette version améliore les performances, la sécurité et ajoute un nouveau menu moderne.
+        Cette version améliore les performances, la sécurité et d'autres aspects du navigateur.
       </div>
 
       <a class="update-btn" href="https://github.com/Maxlware-Developement/Mxlw-browser/releases">Voir le changelog</a>
@@ -197,35 +200,14 @@
       </svg>
       Paramètres
     </button>
-
-    <div class="settings-menu" id="settingsMenu" style="display:none; position:absolute; bottom:50px; right:0; background:var(--bg-tertiary); border-radius:8px; width:280px; box-shadow:0 4px 12px rgba(0,0,0,0.3); overflow:hidden;">
-      <div class="settings-header" style="padding:16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-weight:500;">Paramètres</h3>
-        <button class="back-btn" id="backBtn" style="background:none; border:none; color:var(--accent); cursor:pointer; font-size:0.9rem;">Retour</button>
-      </div>
-      <div class="settings-content" style="padding:16px;">
-        <p style="color:var(--text-secondary); font-size:0.9rem; text-align:center;">Le panneau de paramètres est en cours de développement.</p>
-      </div>
-    </div>
   </div>
 
   <script>
     const settingsBtn = document.getElementById('settingsBtn');
-    const settingsMenu = document.getElementById('settingsMenu');
-    const backBtn = document.getElementById('backBtn');
-
     settingsBtn.addEventListener('click', () => {
-      settingsMenu.style.display = 'block';
-      settingsBtn.style.display = 'none';
-    });
-
-    backBtn.addEventListener('click', () => {
-      settingsMenu.style.display = 'none';
-      settingsBtn.style.display = 'flex';
+      window.open('settings.html', '_blank');
     });
   </script>
 
 </body>
 </html>
-
-
