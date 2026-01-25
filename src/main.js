@@ -5,13 +5,13 @@ const https = require('https');
 const sudo = require('sudo-prompt');
 const { setupContextMenu, setupCreditsShortcut } = require('./utils/context-menu');
 const { setupAdblock } = require('./utils/adblocker');
-const { loadConfig } = require('./utils/config_loader');
+const { loadConfig, saveConfig, updateStatistics } = require('./utils/config_loader');
 const { exec } = require('child_process');
 const { shell } = require('electron');
 const chalk = require('chalk');
 chalk.level = 3;
 
-const APP_VERSION = "1.0.9";
+const APP_VERSION = "1.1.0";
 
 const LICENSE_TEXT = `
 Mozilla Public License Version 2.0
@@ -439,6 +439,7 @@ Dernière mise à jour: Décembre 2025
 let mainWindow;
 let updateWindow = null;
 let aboutWindow = null;
+let settingsWindow = null;
 let tabs = [];
 let blockedUrlTemp = null;
 let blockedReasonTemp = null;
@@ -456,6 +457,7 @@ function createAboutWindow() {
     height: 650,
     frame: false,
     resizable: false,
+    icon: path.join(__dirname, 'assets', 'icon.ico'),
     show: false,
     alwaysOnTop: true,
     transparent: true,
@@ -482,8 +484,55 @@ function createAboutWindow() {
   });
 }
 
+function createSettingsWindow() {
+  if (settingsWindow && !settingsWindow.isDestroyed()) {
+    settingsWindow.focus();
+    return;
+  }
+
+  settingsWindow = new BrowserWindow({
+    width: 1000,
+    height: 700,
+    frame: true,
+    resizable: false,
+    title: 'Paramètres - Mxlw Browser',
+    icon: path.join(__dirname, 'assets', 'icon.ico'),
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    show: false,
+    backgroundColor: '#121212'
+  });
+
+  settingsWindow.loadFile('renderer/settings.html');
+  
+  settingsWindow.once('ready-to-show', () => {
+    settingsWindow.show();
+    settingsWindow.webContents.send('settings-data', {
+      settings: settings,
+      appVersion: APP_VERSION,
+      electronVersion: process.versions.electron,
+      chromeVersion: process.versions.chrome,
+      nodeVersion: process.versions.node
+    });
+  });
+  
+  settingsWindow.on('closed', () => {
+    settingsWindow = null;
+  });
+}
+
+console.log(chalk.cyan('[START] Hey!'));
+
 async function checkVersion() {
   return new Promise((resolve, reject) => {
+    if (!settings.autoUpdate) {
+      console.log(chalk.yellow('[VERSION] Vérification automatique désactivée'));
+      resolve(null);
+      return;
+    }
+
     const req = https.get('https://api.maxlware.com/v1/mxlw-browser/version', (res) => {
       if (res.statusCode !== 200) {
         console.log(chalk.yellow(`[VERSION] API returned status ${res.statusCode}`));
@@ -673,14 +722,67 @@ ipcMain.on('postpone-update', () => {
   startApp();
 });
 
+ipcMain.on('open-settings-window', () => {
+  createSettingsWindow();
+});
+
+ipcMain.on('save-settings', (event, newSettings) => {
+  const success = saveConfig(newSettings);
+  event.returnValue = success;
+});
+
+ipcMain.on('get-settings', (event) => {
+  event.returnValue = settings;
+});
+
+ipcMain.on('get-statistics', (event) => {
+  event.returnValue = settings.statistics || {
+    adsBlocked: 0,
+    trackersBlocked: 0,
+    dataSaved: 0,
+    sitesVisited: 0
+  };
+});
+
+ipcMain.on('reset-statistics', () => {
+  settings.statistics = {
+    adsBlocked: 0,
+    trackersBlocked: 0,
+    dataSaved: 0,
+    sitesVisited: 0
+  };
+  saveConfig({ statistics: settings.statistics });
+});
+
+ipcMain.on('clear-browser-data', () => {
+  if (mainWindow) {
+    mainWindow.webContents.session.clearCache()
+      .then(() => {
+        console.log(chalk.green('[SETTINGS] Cache vidé'));
+        return mainWindow.webContents.session.clearStorageData();
+      })
+      .then(() => {
+        console.log(chalk.green('[SETTINGS] Données de stockage effacées'));
+      })
+      .catch(err => {
+        console.error(chalk.red('[SETTINGS] Erreur lors du nettoyage:', err));
+      });
+  }
+});
+
 function startApp() {
   console.log(chalk.cyan("[START] Loading configurations..."));
   settings = loadConfig();
   console.log(chalk.cyan("[START] Configuration loaded!"));
 
   console.log(chalk.cyan("[RPC] Loading..."));
-  if (settings.RpcEnabled) {
-    require('./rpc');
+  if (settings.RpcEnabled && settings.discordRPC) {
+    try {
+      require('./rpc');
+      console.log(chalk.green("[RPC] Discord Rich Presence activé"));
+    } catch (error) {
+      console.error(chalk.red('[RPC] Erreur de chargement:', error));
+    }
   }
 
   setImmediate(async () => {
@@ -688,6 +790,7 @@ function startApp() {
       const response = await fetch(settings.apis.VerifiedSites);
       const data = await response.json();
       verifiedSites = data;
+      console.log(chalk.green(`[CONFIG] ${verifiedSites.length} sites vérifiés chargés`));
     } catch (error) {
       console.error(chalk.yellow('[Config/Net/VerifiedSites]: ', error));
     }
@@ -707,6 +810,11 @@ app.whenReady().then(async () => {
   if (!ret) {
     console.log(chalk.yellow('[SHORTCUT] Registration failed for Ctrl+Alt+C'));
   }
+  
+  globalShortcut.register('Control+Alt+P', () => {
+    console.log(chalk.white('[SHORTCUT] Ctrl+Alt+P pressed - Opening Settings window'));
+    createSettingsWindow();
+  });
   
   try {
     const apiVersion = await checkVersion();
@@ -762,6 +870,7 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    backgroundColor: settings.darkMode ? '#121212' : '#ffffff',
   });
   console.log(chalk.cyan("[START] Application loaded."));
 
@@ -784,8 +893,25 @@ function createWindow() {
   });
 
   globalShortcut.register('Control+Alt+I', () => {
-    const activeTab = tabs[tabs.length - 1];
-    if (activeTab) activeTab.webContents.openDevTools({ mode: 'detach' });
+    if (settings.devMode) {
+      const activeTab = tabs[tabs.length - 1];
+      if (activeTab) activeTab.webContents.openDevTools({ mode: 'detach' });
+    }
+  });
+
+  globalShortcut.register('Control+T', () => {
+    createTab(settings.homePage);
+  });
+
+  globalShortcut.register('Control+W', () => {
+    if (tabs.length > 1) {
+      const closedTab = tabs.pop();
+      if (closedTab) {
+        mainWindow.removeBrowserView(closedTab);
+      }
+      resizeActiveTab();
+      sendTabsToRenderer();
+    }
   });
 }
 
@@ -793,26 +919,37 @@ function createTab(url) {
   const view = new BrowserView({
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false
     }
   });
 
-  setupAdblock(view);
+  if (settings.adblock) {
+    setupAdblock(view);
+  }
+
   mainWindow.setBrowserView(view);
   tabs.push(view);
   resizeActiveTab();
   view.webContents.loadURL(url);
+
+  updateStatistics('siteVisited', 1);
 
   view.webContents.on('did-finish-load', () => {
     try {
       const currentURL = view.webContents.getURL();
       const hostname = new URL(currentURL).hostname;
 
+      if (settings.checkSSL && currentURL.startsWith('http://') && settings.warnHttp) {
+        console.log(chalk.yellow(`[SECURITY] Connexion HTTP non sécurisée: ${hostname}`));
+      }
+
       if (verifiedSites.includes(hostname)) {
-        console.log(chalk.black(`[VERIFIED] ${hostname}`));
+        console.log(chalk.grey(`[VERIFIED] ${hostname}`));
         mainWindow.webContents.send('site-verified', hostname);
       } else {
-        console.log(chalk.black(`[NOT VERIFIED] ${hostname}`));
+        console.log(chalk.grey(`[NOT VERIFIED] ${hostname}`));
         mainWindow.webContents.send('site-unverified');
       }
     } catch (err) {
@@ -824,38 +961,50 @@ function createTab(url) {
 
   view.webContents.on('will-navigate', (event, newUrl) => {
     const parsed = new URL(newUrl);
-    const hostname = parsed.hostname;
-    if (parsed.protocol === 'http:') {
+    
+    if (parsed.protocol === 'http:' && settings.warnHttp) {
       event.preventDefault();
       blockedUrlTemp = newUrl;
       blockedReasonTemp = 'Connexion non sécurisée (HTTP)';
       loadWarningTab();
     }
+    
+    if (settings.blockDangerous) {
+    }
   });
 
   setupContextMenu(mainWindow, view);
-  view.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  
+  view.webContents.setWindowOpenHandler(({ url }) => {
+    if (settings.backgroundTabs) {
+      createTab(url);
+      return { action: 'deny' };
+    }
+    return { action: 'allow' };
+  });
 }
 
 function resizeActiveTab() {
   if (!mainWindow || tabs.length === 0) return;
   const bounds = mainWindow.getBounds();
   const view = tabs[tabs.length - 1];
+  const topOffset = settings.showBookmarksBar ? 100 : 80;
   view.setBounds({
     x: 0,
-    y: 80,
+    y: topOffset,
     width: bounds.width,
-    height: bounds.height - 80,
+    height: bounds.height - topOffset,
   });
   view.setAutoResize({ width: true, height: true });
 }
 
 function sendTabsToRenderer() {
   const tabData = tabs.map(tab => ({
-    title: tab.webContents.getTitle(),
+    title: tab.webContents.getTitle() || 'Nouvel onglet',
     favicon: tab.webContents.getURL().startsWith('http')
       ? `https://www.google.com/s2/favicons?sz=64&domain_url=${tab.webContents.getURL()}`
-      : null
+      : null,
+    url: tab.webContents.getURL()
   }));
   mainWindow.webContents.send('tabs-updated', tabData);
 }
@@ -869,7 +1018,13 @@ ipcMain.on('navigate', (_, input) => {
   const view = tabs[tabs.length - 1];
   if (!input) return;
 
-  const url = input.includes('.') ? (input.startsWith('http') ? input : `https://${input}`) : `${settings.searchEngine}${encodeURIComponent(input)}`;
+  let url;
+  if (input.includes('.') || input.startsWith('http')) {
+    url = input.startsWith('http') ? input : `https://${input}`;
+  } else {
+    url = `${settings.searchEngine}${encodeURIComponent(input)}`;
+  }
+  
   view.webContents.loadURL(url);
 });
 
@@ -879,6 +1034,16 @@ ipcMain.on('switch-tab', (_, index) => {
   if (tab) {
     mainWindow.setBrowserView(tab);
     resizeActiveTab();
+  }
+});
+ipcMain.on('close-tab', (_, index) => {
+  if (tabs.length > 1 && index < tabs.length) {
+    const closedTab = tabs.splice(index, 1)[0];
+    if (closedTab) {
+      mainWindow.removeBrowserView(closedTab);
+    }
+    resizeActiveTab();
+    sendTabsToRenderer();
   }
 });
 
@@ -891,6 +1056,12 @@ ipcMain.on('maximize-app', () => {
 
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();
+  
+  if (settings.clearCookiesOnExit && mainWindow) {
+    mainWindow.webContents.session.clearStorageData();
+    console.log(chalk.cyan('[APP] Données de navigation effacées'));
+    console.log(chalk.cyan('[STOPPING] Au revoir!'));
+  }
 });
 
 app.on('window-all-closed', () => {
