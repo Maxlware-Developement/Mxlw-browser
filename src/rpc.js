@@ -1,9 +1,8 @@
-// rpc.js
 const RPC = require('discord-rpc');
 const chalk = require('chalk');
 chalk.level = 3;
 
-const clientId = '1359597402096537620';
+const clientId = '1464783948952633414';
 const startTimestamp = new Date();
 
 const rpc = new RPC.Client({ transport: 'ipc' });
