@@ -1,0 +1,382 @@
+! Titre: Liste de blocage Mxlw Browser
+! Description: Liste de filtres pour bloquer les publicités et trackers
+! Version: 1.0
+! Mise à jour: 2026-01-25
+! Source: https://org.maxlware.com/assets/mxlw-browser/adblock.txt
+! Licence: MIT
+! 
+! Format: Adblock Plus
+! Pour plus d'informations: https://adblockplus.org/filters
+
+! ============================================
+! PUBLICITÉS GÉNÉRALES
+! ============================================
+
+! Bannières publicitaires
+||doubleclick.net^
+||googleadservices.com^
+||googlesyndication.com^
+||google-analytics.com^
+||adsense.com^
+||adservice.google.com^
+||adservice.google.fr^
+||adnxs.com^
+||adsafeprotected.com^
+||adsystem.com^
+||advertising.com^
+||criteo.com^
+||outbrain.com^
+||taboola.com^
+||revcontent.com^
+||zemanta.com^
+||mgid.com^
+||nativeads.com^
+||adblade.com^
+||sharethrough.com^
+||districtm.io^
+||openx.net^
+||rubiconproject.com^
+||pubmatic.com^
+||indexexchange.com^
+||sonobi.com^
+||teads.tv^
+||smartadserver.com^
+||aerserv.com^
+||appnexus.com^
+||moatads.com^
+||yieldmo.com^
+||sovrn.com^
+||triplelift.com^
+||amazon-adsystem.com^
+||ads-twitter.com^
+||facebook.com/ads/
+||ads.facebook.com^
+||fbsbx.com^
+||bing.com/ads/
+||ads.bing.com^
+||yieldlab.net^
+||adsymptotic.com^
+
+! Pop-ups et pop-unders
+||popup.com^
+||popunder.com^
+||exit-ad.com^
+||popads.net^
+||propellerads.com^
+||popcash.net^
+||popmyads.com^
+||adsterra.com^
+||popads.com^
+||popclck.org^
+
+! Publicités vidéo
+||ads.youtube.com^
+||video-ads.youtube.com^
+||youtube.com/api/stats/ads
+||googlevideo.com/api/stats/ads
+||video-ads.google.com^
+||vimeo.com/api/stats/ads
+||dailymotion.com/ads/
+||twitch.tv/ads/
+||ads.twitch.tv^
+
+! ============================================
+! TRACKERS
+! ============================================
+
+! Trackers Google
+||google-analytics.com/ga.js
+||google-analytics.com/analytics.js
+||googletagmanager.com/gtag/js
+||googletagmanager.com/gtm.js
+||google.com/recaptcha/
+||gstatic.com/recaptcha/
+||googleusercontent.com/recaptcha/
+
+! Trackers Facebook
+||facebook.com/tr/
+||facebook.com/connect/
+||fbcdn.net/connect
+||facebook.net^
+
+! Trackers Twitter
+||twitter.com/i/jot
+||twitter.com/scribe
+||periscope.tv/scribe
+||vine.co/scribe
+
+! Autres trackers
+||hotjar.com^
+||crazyegg.com^
+||mouseflow.com^
+||clicktale.net^
+||mixpanel.com^
+||segment.com^
+||amplitude.com^
+||heap.io^
+||fullstory.com^
+||logrocket.com^
+||pendo.io^
+||intercom.io^
+||zendesk.com/embeddable
+||freshdesk.com/widget
+||uservoice.com/widget
+||capterra.com/tracker
+||g2.com/tracker
+||trustpilot.com/tracker
+||sitejabber.com/tracker
+
+! ============================================
+! MALWARE & PHISHING
+! ============================================
+
+||malware.com^
+||phishing.com^
+||ransomware.com^
+||spyware.com^
+||adware.com^
+||coin-hive.com^
+||coinhive.com^
+||cryptonight.com^
+||miner.com^
+||jsecoin.com^
+||deepMiner.com^
+||webmine.cz^
+||miner.pr0gramm.com^
+||miner.nablabee.com^
+||crypto-loot.com^
+||coinhave.com^
+||authedmine.com^
+||cryptoloot.pro^
+||minero.pw^
+||miner.nablabee.com^
+||2giga.link^
+||crypto-webminer.com^
+||kliktrack.com^
+||anglerfish.com^
+||rigor.com^
+||kissmetrics.com^
+||omniture.com^
+||coremetrics.com^
+||webtrends.com^
+||clicky.com^
+||statcounter.com^
+||histats.com^
+||whos.amung.us^
+||w3counter.com^
+||reinvigorate.net^
+||goingup.com^
+||shinystat.com^
+||xtremetop100.com^
+||bravenet.com^
+||sitemeter.com^
+||hitwebcounter.com^
+||1freecounter.com^
+||easycounter.com^
+||webstat.com^
+||stat24.com^
+||webstats4u.com^
+
+! ============================================
+! COOKIES & CONSENTEMENTS INTRUSIFS
+! ============================================
+
+! Bannières de cookies
+||cookiebot.com^
+||cookielaw.org^
+||privacy-mgmt.com^
+||onetrust.com^
+||trustarc.com^
+||cookieinformation.com^
+||civiccomputing.com^
+||quantcast.com^
+||didomi.io^
+||sibautomation.com^
+||usercentrics.com^
+||consentmanager.net^
+||cookie-script.com^
+||iubenda.com^
+||klaro.org^
+||cookiefirst.com^
+||cookiesolutions.com^
+||termly.io^
+||secure.trustarc.com^
+
+! ============================================
+! RÉSEAUX SOCIAUX EMBARQUÉS
+! ============================================
+
+! Widgets sociaux
+||facebook.com/plugins/
+||facebook.com/widgets/
+||twitter.com/widgets/
+||platform.twitter.com/widgets/
+||linkedin.com/embed/
+||pinterest.com/widgets/
+||instagram.com/embed/
+||tiktok.com/embed/
+||reddit.com/widgets/
+||disqus.com/embed/
+||addthis.com/widgets/
+||sharethis.com/button/
+||addtoany.com/buttons/
+
+! Boutons de partage
+||share-buttons.com^
+||socialshare.com^
+||sharebuttons.io^
+||socialsharingplugin.com^
+||sharebutton.net^
+||sharify.com^
+
+! ============================================
+! PUBLICITÉS SPÉCIFIQUES À LA FRANCE
+! ============================================
+
+! Publicités françaises
+||pubdirecte.com^
+||ad6media.fr^
+||adverline.com^
+||allopub.com^
+||pubsoustraites.com^
+||regiepub.com^
+||trackerteaser.com^
+||ad4mat.com^
+||advertising.orange.fr^
+||pub.bouyguestelecom.fr^
+||ads.sfr.fr^
+||pub.free.fr^
+||adserver.20minutes.fr^
+||adserver.leparisien.fr^
+||adserver.lefigaro.fr^
+||adserver.lemonde.fr^
+||adserver.liberation.fr^
+||pub.ouest-france.fr^
+||adserver.m6.fr^
+||adserver.tf1.fr^
+||adserver.france2.fr^
+||adserver.france3.fr^
+||adserver.canal-plus.com^
+
+! ============================================
+! RÈGLES DE COSMÉTIQUE (CSS)
+! ============================================
+
+! Masquer les éléments publicitaires
+##div[class*="ad-"]
+##div[class*="ads-"]
+##div[class*="advertisement"]
+##div[class*="publicite"]
+##div[class*="pub-"]
+##div[id*="ad-"]
+##div[id*="ads-"]
+##div[id*="advertisement"]
+##div[id*="publicite"]
+##div[id*="pub-"]
+##ins[class*="adsbygoogle"]
+##iframe[src*="ads"]
+##iframe[src*="publicite"]
+##iframe[src*="pub"]
+
+! Masquer les bannières de cookies
+##div[class*="cookie"]
+##div[id*="cookie"]
+##div[class*="cookies"]
+##div[id*="cookies"]
+##div[class*="gdpr"]
+##div[id*="gdpr"]
+##div[class*="consent"]
+##div[id*="consent"]
+##div[class*="privacy"]
+##div[id*="privacy"]
+
+! Masquer les pop-ups
+##div[class*="popup"]
+##div[id*="popup"]
+##div[class*="modal"][style*="display: block"]
+##div[class*="overlay"]
+
+! ============================================
+! EXCEPTIONS (SITES AUTORISÉS)
+! ============================================
+
+! Autoriser certaines publicités nécessaires
+@@||google.com/recaptcha/api.js$script
+@@||www.google.com/recaptcha/api.js$script
+@@||gstatic.com/recaptcha/$script
+@@||hcaptcha.com/$script
+@@||api.hcaptcha.com/$script
+
+! Autoriser les CDN nécessaires
+@@||cloudflare.com^
+@@||ajax.googleapis.com^
+@@||cdnjs.cloudflare.com^
+@@||code.jquery.com^
+@@||bootstrapcdn.com^
+@@||fontawesome.com^
+@@||fonts.googleapis.com^
+
+! ============================================
+! RÈGLES SPÉCIFIQUES AUX SITES FRANÇAIS
+! ============================================
+
+! 20minutes.fr
+||20minutes.fr/pubs/
+||20minutes.fr/assets/js/pub.js
+##div[data-adunit="20minutes"]
+
+! Le Monde
+||lemonde.fr/ads/
+||lemonde.fr/publicite/
+##div[class*="bloc_pub"]
+
+! Le Figaro
+||lefigaro.fr/ads/
+||lefigaro.fr/regie/
+##div[id*="figaro_pub"]
+
+! Ouest-France
+||ouest-france.fr/ads/
+||ouest-france.fr/publicite/
+##div[class*="bloc-publicitaire"]
+
+! TF1
+||tf1.fr/ads/
+||tf1.fr/pubs/
+##div[class*="tf1-pub"]
+
+! M6
+||m6.fr/ads/
+||m6.fr/publicite/
+##div[class*="m6-pub"]
+
+! ============================================
+! FILTRES AVANCÉS
+! ============================================
+
+! Bloque les requêtes de mining
+||*crypto*miner*^
+||*coin*miner*^
+||*miner*script*^
+||*webminer*^
+||*cryptojacking*^
+
+! Bloque les redirections douteuses
+||*click*redirect*^
+||*ad*redirect*^
+||*pop*redirect*^
+||*exit*redirect*^
+
+! Bloque les scripts de tracking tiers
+||*tracking*script*^
+||*analytics*script*^
+||*pixel*script*^
+
+! ============================================
+! DERNIÈRE MODIFICATION
+! ============================================
+
+! Dernière mise à jour: 2026-01-25
+! Mise à jour automatique quotidienne
+! Contact: contact@maxlware.com
+! Site: https://maxlware.com
