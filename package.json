@@ -1,6 +1,6 @@
 {
-  "name": "mxlw-browser",
-  "version": "1.1.0",
+  "name": "mxlw-browser-lts",
+  "version": "1.1.1",
   "description": "Navigateur web minimaliste et extensible développé avec Electron et Node.js",
   "author": {
     "name": "Maxlware",
@@ -53,8 +53,8 @@
     "sudo-prompt": "^9.2.1"
   },
   "build": {
-    "appId": "com.maxlware.browser",
-    "productName": "Mxlw Browser",
+    "appId": "com.maxlware.browser-lts",
+    "productName": "Mxlw Browser LTS",
     "copyright": "© 2025 Maxlware",
     "asar": true,
     "files": [
