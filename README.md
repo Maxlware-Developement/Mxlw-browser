@@ -5,6 +5,9 @@
 **Mxlw Browser** est un navigateur web **minimaliste**, **rapide** et **extensible**, construit avec **Electron** et **Node.js**.  
 Son interface s’inspire des designs **minimaliste** et **intuitive**, offrant une expérience claire et moderne.
 
+> [!IMPORTANT]
+> Mxlw Browser n'est plus supporté. Pour télécharger la version stable *(LTS)* [cliquez ici](https://github.com/Maxlware-Developement/Mxlw-browser/releases/tag/LTS). Pour télécharger **Grale** [cliquez ici](https://github.com/Maxlware-Developement/Grale/releases/tag/TEST).
+
 ---
 
 ## Fonctionnalités
