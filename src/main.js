@@ -11,7 +11,7 @@ const { shell } = require('electron');
 const chalk = require('chalk');
 chalk.level = 3;
 
-const APP_VERSION = "1.1.0";
+const APP_VERSION = "1.1.1";
 
 const LICENSE_TEXT = `
 Mozilla Public License Version 2.0
@@ -401,7 +401,7 @@ contact@maxlware.fr
 `;
 
 const CREDITS_TEXT = `
-Mxlw Browser - Crédits
+Mxlw Browser LTS - Crédits
 
 Développement Principal:
 • Maxlware (Fondateur & Lead Developer)
@@ -495,7 +495,7 @@ function createSettingsWindow() {
     height: 700,
     frame: true,
     resizable: false,
-    title: 'Paramètres - Mxlw Browser',
+    title: 'Paramètres - Mxlw Browser LTS',
     icon: path.join(__dirname, 'assets', 'icon.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -865,7 +865,7 @@ function createWindow() {
     width: 1280,
     height: 800,
     frame: false,
-    title: 'Mxlw Browser',
+    title: 'Mxlw Browser LTS',
     icon: path.join(__dirname, 'assets', 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -881,10 +881,11 @@ function createWindow() {
   
   createTab(`file://${__dirname}/${settings.homePage}`);
 
-  console.log(chalk.white("--------------------"));
+  console.log(chalk.white("------------------------------------------"));
   console.log(chalk.cyan("  [START] Loaded!"));
   console.log(chalk.cyan(`  Version ${APP_VERSION}`));
-  console.log(chalk.white("---------------------"));
+  console.log(chalk.cyan(`  LTS VERSION - ${APP_VERSION.split('.').slice(0, 2).join('.')} - Supported until 2026`));
+  console.log(chalk.white("------------------------------------------"));
 
   mainWindow.on('resize', () => resizeActiveTab());
   mainWindow.on('closed', () => {
